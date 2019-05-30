@@ -1,7 +1,7 @@
 # flask-launch
 
 ## Build Status:
-[![Build Status](https://travis-ci.org/tmidi/flask-isitpublic.svg?branch=master)](https://travis-ci.org/tmidi/flask-isitpublic)
+[![Build Status](https://travis-ci.org/tmidi/flask-launch.svg?branch=master)](https://travis-ci.org/tmidi/flask-launch)
 
 ## Description:
 Launch is simple Flask project to track upcoming space launches and display information about the mission, rocket and agency.
