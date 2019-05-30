@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<hr>
+<div class="container bootstrap snippet">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1><img src="https://restcountries.eu/data/{{ launch.agency.country_code|lower }}.svg" style="width: 64px; height: 32px;border:1px"/> {{ launch.name }}</h1></div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+            <ul class="list-group">
+                <li class="list-group-item text-muted">Launch Window</li>
+                <li class="list-group-item text-center"><strong><span class="pull-left" id="tzero-timer"></span></strong></li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>Starts:    </strong></span>{{ launch.windowstart.strftime('%x %H:%M') }}</li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>Ends:      </strong></span>{{ launch.windowend.strftime('%x %H:%M') }}</li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>T-0:       </strong></span>{{ launch.net.strftime('%x %H:%M') }}</li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>Time zone: </strong></span>{{ launch.net.strftime('%Z') }}</li>
+            </ul>
+
+            <ul class="list-group my-2">
+                <li class="list-group-item text-muted">Agency<i class="fa fa-dashboard fa-1x"></i></li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>Name:</strong></span> {{ launch.agency.name }}</li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>Abbreviation:</strong></span> {{ launch.agency.abbrev }}</li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>Country:</strong></span> {{ launch.agency.country_code }}&nbsp;<img src="https://restcountries.eu/data/{{ launch.agency.country_code|lower }}.svg" style="width: 32px; height: 20px;"/></li>
+                <li class="list-group-item text-left"><span class="pull-left"><strong>Links:</strong></span> <a href="{{ launch.agency.info_urls[0] }}">Website</a>, <a href="{{ launch.agency.wiki_url }}">Wikipedia</a></li>
+            </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">Stream URLs:<i class="fa fa-link fa-1x"></i></div>
+                {% for url in launch.vid_urls %}
+                <div class="panel-body"><a href="{{ url }}">{{ url | replace('http\:', '') }}</a></div>
+                {% endfor %}
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Social Media</div>
+                <div class="panel-body">
+                    <a href="http://www.facebook.com/sharer/sharer.php?u={{rule_url}}&t={{social_message}}" class="text-dark"><i class="fab fa-facebook-square fa-2x"></i></a>
+                    <a href="https://twitter.com/intent/tweet?text=<message>" class="text-dark"><i class="fab fa-github-square fa-2x"></i></a>
+                    <a href="#" class="text-dark"><i class="fab fa-twitter-square fa-2x"></i></a>
+                    <a href="#" class="text-dark"><i class="fab fa-pinterest-square fa-2x"></i></a>
+                    <a href="#" class="text-dark"><i class="fab fa-google-plus-square fa-2x"></i></a>
+                </div>
+            </div>
+
+        </div>
+        <!--/col-3-->
+        <div class="col-sm-9">
+            <ul class="nav nav-tabs" id="myTab">
+              <li class="nav-item">
+                <a class="nav-link active" href="#launch" data-toggle="tab">Overview</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#rocket" data-toggle="tab">Rocket</a>
+              </li>
+            </ul>
+            <!--/tab-pane-->
+            <div class="tab-content">
+                <div class="tab-pane active" id="launch">
+                  <hr>
+                    <ul class="list-unstyled">
+                      <li><strong>Launch name:</strong> {{ launch.name }}</li>
+                      <li><strong>Last updated:</strong> {{ launch.changed }}</li>
+                      <li><strong>Location:</strong> {{ launch.location.name }}</li>
+                      <li><strong>Launch Window start:</strong> {{ launch.windowstart }} </li>
+                      <li><strong>Laumch Window ends:</strong> {{ launch.windowend }}</li>
+                      <li><strong>Launch time:</strong> {{ launch.windownet }} </li>
+                      <li><strong>Launch Status:</strong> {% if launch.status == 1 %}Green{% elif launch.status == 2 %}Red{% elif launch.status == 3%}Success{% endif %}</li>
+                      <li><strong>Rocket Name:</strong> {{ launch.rocket.name }}</li>
+                      <li><strong>Rocket Wiki:</strong> {{ launch.rocket.wiki_url }} </li>
+                      <li><strong>Missions:</strong></li>
+                        <ul>
+                          {% for mission in launch.missions %}
+                          <li><strong>Name:</strong> {{ mission.name }}</li>
+                          <li><strong>Description:</strong> {{ mission.description }}</li>
+                          <li><strong>Wiki page:</strong> {{ mission.wikiURL }}</li>
+                          {% if mission.agencies is iterable %}
+                            {% for agency in mission.agencies %}
+                            <ul>
+                              <li><strong>Agency:</strong> {{ agency.name }}</li>
+                              <li><strong>Country:</strong>{{ agency.countryCode }}</li>
+                            {% endfor %}
+                            {% endif %}
+                          {% endfor %}
+                          </ul>
+                        </ul>
+                </div>
+                <!--/tab-pane-->
+                <div class="tab-pane" id="rocket">
+                    <hr>
+                    <p><i class="fas fa-exclamation-triangle"></i> We can't provide images to all rockets nor can we reliable associate an image with a one.</p>
+                    <img src="{{ launch.rocket.image_url }}" class="img-fluid" alt="Responsive image">
+                </div>
+            </div>
+            <!--/tab-pane-->
+        </div>
+        <!--/tab-content-->
+
+    </div>
+    <!--/col-9-->
+</div>
+<!--/row-->
+  {% endblock %}

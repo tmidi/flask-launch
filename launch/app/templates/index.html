@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+  <!-- Page Heading -->
+  <div ng-controller="LLController">
+    <div class="mb-2 card">
+      <div class="card-header-tab card-header">
+        <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+          <i class="header-icon lnr-charts icon-gradient bg-happy-green"></i> Upcoming Launche
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <img class="card-img img-fluid mb-3 mb-md-0 rounded-0" ng-src="{{ launches[0].rocket.image_url }}" alt="" src="{{ launches[0].rocket.image_url }}">
+        </div>
+        <div class="col-md-7">
+          <h3 class="ng-binding"><a class="text-dark" href="launch/{{ launches[0].id }}/{{ launches[0].name }}">{{ launches[0].name }}</a></h3>
+          <div class="text">
+            <p><span ng-if="sn(n)" class="ng-binding ng-scope">{{ launches[0].net }}</span></p>
+            <p><strong>Launch Window:</strong> <span ng-if="sfw(n)" class="ng-binding ng-scope">{{ launches[0].windowstart.strftime('%x %H:%M') }} - {{ launches[0].windowend.strftime('%x %H:%M') }} ({{ launches[0].windowstart.strftime('%Z') }})</span></p>
+            <p class="ng-binding"><strong>Pad name:</strong> {{ launches[0].location.pads[0].name }} <a ng-if="n.padmap" ng-href="{{ launches[0].location.pads[0].mapURL }}" target="_blank" class="ng-scope" href="{{ launches[0].location.pads[0].map_url }}"><i class="fas fa-map-marker-alt"></i></a></p>
+          </div>
+          <p ng-if="n.desc" class="ng-binding ng-scope"><strong>Mission description:</strong> {{ launches[0].missions[0].description }}
+            <a href="launch/{{ launches[0].id }}/{{ launches[0].name }}" class="card-link text-right"> Read more</a>
+          </p>
+
+
+          <p ng-if="n.vidURLs" ng-repeat="v in n.vidURLs" class="ng-scope"><a ng-href="" target="_blank" class="ng-binding"></a></p>
+        </div>
+        <div class="col-sm-12 col-md-12 col-xl-12">
+          <div class="card no-shadow rm-border rounded-0 bg-transparent widget-chart text-left">
+            <div class="text-center d-block p-3 card-footer">
+              <div class="card bg-dark text-white">
+                <h3 class="text-center">
+                <div class="d-flex flex-wrap justify-content-center mt-2" id="tzero-timer">
+                </div>
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="my-3 p-3 bg-white rounded box-shadow">
+      <h6 class="border-bottom border-gray pb-2 mb-0">Upcoming Launches</h6>
+      {% for launch in launches[1:] %}
+        <div class="media text-muted pt-3 border-bottom lh-125 border-gray pb-3">
+          <img data-src="holder.js/162x89?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="320x200" class="mr-2 rounded" style="width: 320px; height: 200px;" src="{{ launch.rocket.imageURL }}" data-holder-rendered="false">
+
+          <p class="media-body pb-3 mb-0 small ">
+            <strong class="d-block text-gray-dark"><a class="text-dark" href="launch/{{ launch.id }}/{{ launch.name }}">{{ launch.name }}</a></strong>
+            {{ launch.net.strftime('%x %H:%M') }} {{ launch.windowstart.strftime('%Z') }}</br>
+            {{ launch.agency.name }} </br>
+            {{ launch.location.pads[0].name }} </br>
+            {% if launch.missions %}
+              <strong>Mission description:</strong> {{ launch.missions[0].description|truncate(500)}}
+            {% else %}
+              Description for this misson is not available yet.
+            {% endif %}
+          </p>
+
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endblock %}

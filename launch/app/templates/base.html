@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>{{ title }}</title>
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('index') }}">Space launches</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('index') }}">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row mt-2">
+      <div class="col-lg-12">
+          {% block body %}
+          {% endblock %}
+      </div>
+    </div>
+  </div>
+<footer class="mt-2 p-4 text-center text-muted bg-light text-dark">
+  {% include 'footer.html' %}
+</footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='jquery/jquery.slim.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{ url_for('static', filename='bootstrap/js/holder.min.js')}}"></script>
+  <script type="text/javascript">
+    // Pad a number to two digits
+    function pad(number){
+      return (number < 10 ? '0' : '') + number;
+    }
+    // Set the date we're counting down to
+    var countDownDate = new Date("{{ main_launch }}").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = pad(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+      var minutes = pad(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+      var seconds = pad(Math.floor((distance % (1000 * 60)) / 1000));
+
+      // Display the result in the element with id="demo"
+      if (days == 0) {
+        document.getElementById("tzero-timer").innerHTML = hours + " : " + minutes + " : " + seconds;
+      } else {
+        document.getElementById("tzero-timer").innerHTML = days + "d " + hours + " : " + minutes + " : " + seconds;
+      }
+
+      // If the count down is finished, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("tzero-timer").innerHTML = "Left off";
+      }
+    }, 1000);
+
+  </script>
+
+</body>
+
+</html>

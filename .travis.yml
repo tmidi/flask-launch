@@ -1,0 +1,12 @@
+
+sudo: required
+
+services:
+  - docker
+
+script:
+  - docker build -t tmidi/launch .
+  - docker run -d -p 5000:5000 tmidi/launch
+
+after_script:
+  - docker images
